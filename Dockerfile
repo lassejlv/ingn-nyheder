@@ -9,6 +9,8 @@ RUN npm install --force
 COPY . .
 
 ARG NEXT_PUBLIC_APP_URL
+ARG CONTENTFUL_SPACE_ID
+ARG CONTENTFUL_ACCESS_TOKEN
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
@@ -34,8 +36,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE 4000
 
-ENV PORT=3000
+ENV PORT=4000
 
 CMD node server.js
