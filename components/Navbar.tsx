@@ -1,14 +1,16 @@
 'use client';
-import { Menu, User, X } from 'lucide-react';
+import { Hammer, Menu, User, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { trpc } from '@/server/client';
 
 const categories = ['Alle', 'Indland', 'Udland', 'Teknologi', 'Sport', 'Politik', 'Samfund'];
 
 export default function Navbar() {
    const [isOpen, setIsOpen] = useState(false);
    const [isScrolled, setIsScrolled] = useState(false);
+   const isAdminAuthenticated = trpc.admin.isAuthorized.useQuery();
 
    useEffect(() => {
       const handleScroll = () => {
@@ -50,6 +52,11 @@ export default function Navbar() {
             <Link href='/login' className='text-custom-red'>
                <User size={30} />
             </Link>
+            {isAdminAuthenticated.data && (
+               <Link href='/admin' className='text-custom-red'>
+                  <Hammer size={30} />
+               </Link>
+            )}
             <button className='text-custom-red md:hidden' onClick={() => setIsOpen(!isOpen)}>
                <Menu size={30} />
             </button>
