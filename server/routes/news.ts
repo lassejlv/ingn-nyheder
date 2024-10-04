@@ -1,12 +1,10 @@
 import { z } from 'zod';
 import { procedure, router } from '../trpc';
 import { contentful } from '@/lib/contentful';
+import { TRPCError } from '@trpc/server';
+import { env } from '@/lib/env';
 
 export const newsRouter = router({
-   hello: procedure.input(z.string()).query(async ({ input }) => {
-      return { message: `Hello ${input}!` };
-   }),
-
    getNews: procedure.query(async () => {
       const posts = await contentful.getEntries<any>({
          content_type: 'news',
@@ -34,5 +32,9 @@ export const newsRouter = router({
       });
 
       return posts.items;
+   }),
+
+   deleteNewsById: procedure.input(z.object({ id: z.string() })).mutation(async ({ input }) => {
+      return true;
    }),
 });
